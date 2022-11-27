@@ -1,106 +1,174 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections;
+using System;
 
+// struct = class without functions
 [System.Serializable]
 public struct Gesture
 {
     public string name;
-    public List<Vector3> fingerData;
-    public UnityEvent OnRecognized;
 
+    public List<Vector3> fingerDatas;
+    public List<Quaternion> fingersRotationData;
+
+    public UnityEvent onRecognized;
 }
 
 public class GestureDetection : MonoBehaviour
 {
-    [SerializeField]
-    private OVRSkeleton skeleton;
+    [Header("Threshold value")]
+    public float distanceThreshold = 0.1f;
+    public float dotThreshold = 0.25f;
 
-    private List<OVRBone> fingerBones;
+    [Header("Hand Skeleton")]
+    public OVRSkeleton skeleton;
 
-    [SerializeField]
-    private List<Gesture> gestures;
+    [Header("List of Gestures")]
+    public List<Gesture> gestures;
 
-    [SerializeField]
-    bool debugMode = true;
+    private List<OVRBone> fingerbones = null;
 
-    [SerializeField]
-    float threshold = 0.1f;
+    [Header("DebugMode")]
+    public bool debugMode = true;
 
-    Gesture previousGesture = new Gesture();
+    private bool hasStarted = false;
+    private bool hasRecognize = false;
+    private bool done = false;
 
-    // Start is called before the first frame update
+    //// Add an event if you want to make happen when a gesture is not identified
+    //[Header("Not Recognized Event")]
+    //public UnityEvent notRecognize;
+
+    private Gesture previousGesture = new Gesture();
+
     void Start()
     {
-        //set all fingers of hand
-        fingerBones = new List<OVRBone>(skeleton.Bones);
+        //Used coroutine to wait until Oculus hands are available
+        StartCoroutine(DelayRoutine(2.5f, Initialize));
     }
 
-    // Update is called once per frame
+    // Coroutine used to delay Initialization
+    public IEnumerator DelayRoutine(float delay, Action actionToDo)
+    {
+        yield return new WaitForSeconds(delay);
+        actionToDo.Invoke();
+    }
+
+    public void Initialize()
+    {
+        SetSkeleton();
+
+        hasStarted = true;
+    }
+    public void SetSkeleton()
+    {
+        // Populate the private list of fingerbones from the current hand we put in the skeleton
+        fingerbones = new List<OVRBone>(skeleton.Bones);
+    }
+
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space) && debugMode)
+        // if in debug mode and we press Space, save a gesture
+        if (debugMode && Input.GetKeyDown(KeyCode.Space))
         {
             Save();
         }
 
-        //Check if gesture exitst
-        Gesture currentGesture = Recognize();
-        bool isRecognized = !currentGesture.Equals(new Gesture());
-        //Check if it is a new gesture
-        if(isRecognized && !currentGesture.Equals(previousGesture))
+        //if the initialization was successful
+        if (hasStarted.Equals(true))
         {
-            Debug.Log("New Gesture found: " + currentGesture.name);
-            previousGesture = currentGesture;
-            currentGesture.OnRecognized.Invoke();
+            Gesture currentGesture = Recognize();
+
+            hasRecognize = !currentGesture.Equals(new Gesture());
+
+            // and if the gesture is recognized
+            if (hasRecognize && !currentGesture.Equals(previousGesture))
+            {
+                // we change another boolean to avoid a loop of event
+                done = true;
+
+                Debug.Log("The name of the found gesture is: " + currentGesture.name);
+                //currentGesture.onRecognized?.Invoke();
+                previousGesture = currentGesture;
+            }
+
+            else
+            {
+                if (done)
+                {
+                    Debug.Log("Not Recognized");
+                    // we set to false the boolean again, so this will not loop
+                    done = false;
+
+                    // and finally we will invoke an event when we end to make the previous gesture
+                    //notRecognize?.Invoke();
+                }
+            }
         }
-        
     }
 
     void Save()
     {
-        Gesture gesture = new Gesture();
-        gesture.name = "New Gesture";
+        Gesture g = new Gesture();
+
+        g.name = "New Gesture";
+
         List<Vector3> data = new List<Vector3>();
-        foreach(var bone in fingerBones)
+        List<Quaternion> rotationData = new List<Quaternion>();
+
+        foreach (var bone in fingerbones)
         {
-            //finger position relative to root
+            // the fingers positions are in base at the hand Root
             data.Add(skeleton.transform.InverseTransformPoint(bone.Transform.position));
+            rotationData.Add(bone.Transform.rotation);
+           
         }
 
-        gesture.fingerData = data;
-        gestures.Add(gesture);
+        g.fingerDatas = data;
+        g.fingersRotationData = rotationData;
+
+        gestures.Add(g);
     }
 
     Gesture Recognize()
     {
         Gesture currentGesture = new Gesture();
-        float currentMinDistance = Mathf.Infinity;
 
-        foreach(var gesture in gestures)
+        float currentMin = Mathf.Infinity;
+
+        foreach (var gesture in gestures)
         {
-            float totalDistance = 0;
+            float sumDistance = 0;
+
             bool isDiscarded = false;
 
-            for(int i=0; i < fingerBones.Count; i++)
+            for (int i = 0; i < fingerbones.Count; i++)
             {
-                Vector3 currentData = skeleton.transform.InverseTransformPoint(fingerBones[i].Transform.position);
-                float distance = Vector3.Distance(currentData, fingerBones[i].Transform.position);
+               
+                Vector3 currentData = skeleton.transform.InverseTransformPoint(fingerbones[i].Transform.position);
 
-                if(distance > threshold)
+                // with a new float we calculate the distance between the current gesture we are making with all the gesture we saved
+                float distance = Vector3.Distance(currentData, gesture.fingerDatas[i]);
+                //float angle = Quaternion.Angle(skeleton.transform.rotation, gesture.fingersRotationData[i]);
+                float dot = Math.Abs(Quaternion.Dot(skeleton.transform.rotation, gesture.fingersRotationData[i]));
+                //Debug.Log(dot + "zzzzzzzzzzzzzzzz" + (1 - dotThreshold));
+                // if the distance is bigger than threshold discard gesture
+                if (distance > distanceThreshold )
                 {
+                    //Debug.Log("discard");
                     isDiscarded = true;
                     break;
                 }
-
-                totalDistance += distance;
+                //Debug.Log("No discard uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+                sumDistance += distance;
             }
 
-            if(!isDiscarded && totalDistance < currentMinDistance)
+            if (!isDiscarded && sumDistance < currentMin)
             {
-                //get most propable gesture
-                currentMinDistance = totalDistance;
+                currentMin = sumDistance;
+
                 currentGesture = gesture;
             }
         }
