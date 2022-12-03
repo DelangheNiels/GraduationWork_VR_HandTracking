@@ -34,7 +34,7 @@ namespace DigitalRuby.PyroParticles
         public float ProjectileColliderDelay = 0.0f;
 
         [Tooltip("The speed of the collider.")]
-        public float ProjectileColliderSpeed = 0f;
+        public float ProjectileColliderSpeed = 450.0f;
 
         [Tooltip("The direction that the collider will go. For example, flame strike goes down, and fireball goes forward.")]
         public Vector3 ProjectileDirection = Vector3.forward;
@@ -63,51 +63,47 @@ namespace DigitalRuby.PyroParticles
         {
             base.Start();
 
-            //StartCoroutine(SendCollisionAfterDelay());
+            StartCoroutine(SendCollisionAfterDelay());
         }
 
         public void HandleCollision(GameObject obj, Collision c)
         {
-            if(!obj.tag.Equals("Player"))
+            if (collided)
             {
-                if (collided)
-                {
-                    // already collided, don't do anything
-                    return;
-                }
+                // already collided, don't do anything
+                return;
+            }
 
-                // stop the projectile
-                collided = true;
-                Stop();
+            // stop the projectile
+            collided = true;
+            Stop();
 
-                // destroy particle systems after a slight delay
-                if (ProjectileDestroyParticleSystemsOnCollision != null)
+            // destroy particle systems after a slight delay
+            if (ProjectileDestroyParticleSystemsOnCollision != null)
+            {
+                foreach (ParticleSystem p in ProjectileDestroyParticleSystemsOnCollision)
                 {
-                    foreach (ParticleSystem p in ProjectileDestroyParticleSystemsOnCollision)
-                    {
-                        GameObject.Destroy(p, 0.1f);
-                    }
-                }
-
-                // play collision sound
-                if (ProjectileCollisionSound != null)
-                {
-                    ProjectileCollisionSound.Play();
-                }
-
-                // if we have contacts, play the collision particle system and call the delegate
-                if (c.contacts.Length != 0)
-                {
-                    ProjectileExplosionParticleSystem.transform.position = c.contacts[0].point;
-                    ProjectileExplosionParticleSystem.Play();
-                    FireBaseScript.CreateExplosion(c.contacts[0].point, ProjectileExplosionRadius, ProjectileExplosionForce);
-                    if (CollisionDelegate != null)
-                    {
-                        CollisionDelegate(this, c.contacts[0].point);
-                    }
+                    GameObject.Destroy(p, 0.1f);
                 }
             }
-           
+
+            // play collision sound
+            if (ProjectileCollisionSound != null)
+            {
+                ProjectileCollisionSound.Play();
+            }
+
+            // if we have contacts, play the collision particle system and call the delegate
+            if (c.contacts.Length != 0)
+            {
+                ProjectileExplosionParticleSystem.transform.position = c.contacts[0].point;
+                ProjectileExplosionParticleSystem.Play();
+                FireBaseScript.CreateExplosion(c.contacts[0].point, ProjectileExplosionRadius, ProjectileExplosionForce);
+                if (CollisionDelegate != null)
+                {
+                    CollisionDelegate(this, c.contacts[0].point);
+                }
+            }
         }
     }
 }

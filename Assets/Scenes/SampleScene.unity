@@ -193,9 +193,17 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2272661615802285742, guid: f39a9d103c4129b42a53567f6cd8356a, type: 3}
+      propertyPath: _updateRootPose
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2734225618138098454, guid: f39a9d103c4129b42a53567f6cd8356a, type: 3}
+      propertyPath: _updateRootPose
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5550776016039436608, guid: f39a9d103c4129b42a53567f6cd8356a, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5550776016039436608, guid: f39a9d103c4129b42a53567f6cd8356a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -274,26 +282,38 @@ PrefabInstance:
     - target: {fileID: 1269632090979690283, guid: 5955966e555560e4db6061e6d6b24415, type: 3}
       propertyPath: _whenSelected.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1683872682}
+      objectReference: {fileID: 825205775}
+    - target: {fileID: 1269632090979690283, guid: 5955966e555560e4db6061e6d6b24415, type: 3}
+      propertyPath: _whenUnselected.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1269632090979690283, guid: 5955966e555560e4db6061e6d6b24415, type: 3}
       propertyPath: _whenUnselected.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1683872682}
+      objectReference: {fileID: 825205775}
     - target: {fileID: 1269632090979690283, guid: 5955966e555560e4db6061e6d6b24415, type: 3}
       propertyPath: _whenSelected.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LogSpellDebugMessage
+      value: CastElectricitySpell
       objectReference: {fileID: 0}
     - target: {fileID: 1269632090979690283, guid: 5955966e555560e4db6061e6d6b24415, type: 3}
       propertyPath: _whenUnselected.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LogSpellDebugMessage
+      value: ClearSpells
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269632090979690283, guid: 5955966e555560e4db6061e6d6b24415, type: 3}
+      propertyPath: _whenSelected.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SpellCaster, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269632090979690283, guid: 5955966e555560e4db6061e6d6b24415, type: 3}
+      propertyPath: _whenUnselected.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SpellCaster, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1269632090979690283, guid: 5955966e555560e4db6061e6d6b24415, type: 3}
       propertyPath: _whenSelected.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Current pose is electricity Left
+      value: left
       objectReference: {fileID: 0}
     - target: {fileID: 1269632090979690283, guid: 5955966e555560e4db6061e6d6b24415, type: 3}
       propertyPath: _whenUnselected.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Lost electricity pose Left
+      value: left
       objectReference: {fileID: 0}
     - target: {fileID: 3961000253948693596, guid: 5955966e555560e4db6061e6d6b24415, type: 3}
       propertyPath: m_RootOrder
@@ -384,7 +404,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.5
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -480,22 +500,26 @@ PrefabInstance:
     - target: {fileID: 1269632090979690283, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
       propertyPath: _whenSelected.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1683872682}
+      objectReference: {fileID: 825205775}
     - target: {fileID: 1269632090979690283, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
       propertyPath: _whenUnselected.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1683872682}
     - target: {fileID: 1269632090979690283, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
       propertyPath: _whenSelected.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LogSpellDebugMessage
+      value: CastFireBallSpell
       objectReference: {fileID: 0}
     - target: {fileID: 1269632090979690283, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
       propertyPath: _whenUnselected.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: LogSpellDebugMessage
       objectReference: {fileID: 0}
     - target: {fileID: 1269632090979690283, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
+      propertyPath: _whenSelected.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SpellCaster, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269632090979690283, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
       propertyPath: _whenSelected.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Current pose is fireball Right
+      value: right
       objectReference: {fileID: 0}
     - target: {fileID: 1269632090979690283, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
       propertyPath: _whenUnselected.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
@@ -594,6 +618,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a379f34d4f4f2e408d34f14bfb753ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &825205775 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7389714136360484040, guid: f2f60d2ea5759e746b172e262d2aa6a9, type: 3}
+  m_PrefabInstance: {fileID: 2820632521484746198}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 944641c7920d0cf4586ae9e2fd58e70f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1225491080 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2734225618138098454, guid: f39a9d103c4129b42a53567f6cd8356a, type: 3}
+  m_PrefabInstance: {fileID: 580792481}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2609c54f376cffc4da1ab9401cc1a36f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1232729718
 GameObject:
   m_ObjectHideFlags: 0
@@ -640,22 +686,26 @@ PrefabInstance:
     - target: {fileID: 1269632090979690283, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
       propertyPath: _whenSelected.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1683872682}
+      objectReference: {fileID: 825205775}
     - target: {fileID: 1269632090979690283, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
       propertyPath: _whenUnselected.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1683872682}
     - target: {fileID: 1269632090979690283, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
       propertyPath: _whenSelected.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LogSpellDebugMessage
+      value: CastFireBallSpell
       objectReference: {fileID: 0}
     - target: {fileID: 1269632090979690283, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
       propertyPath: _whenUnselected.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: LogSpellDebugMessage
       objectReference: {fileID: 0}
     - target: {fileID: 1269632090979690283, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
+      propertyPath: _whenSelected.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SpellCaster, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269632090979690283, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
       propertyPath: _whenSelected.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Current pose is fireball left
+      value: left
       objectReference: {fileID: 0}
     - target: {fileID: 1269632090979690283, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
       propertyPath: _whenUnselected.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
@@ -791,7 +841,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6690102857349407991, guid: 1655dfcb8fc5f2b468db636edf92c279, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.13
+      value: -4.69
       objectReference: {fileID: 0}
     - target: {fileID: 6690102857349407991, guid: 1655dfcb8fc5f2b468db636edf92c279, type: 3}
       propertyPath: m_LocalPosition.y
@@ -887,8 +937,19 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1706403456 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2272661615802285742, guid: f39a9d103c4129b42a53567f6cd8356a, type: 3}
+  m_PrefabInstance: {fileID: 580792481}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2609c54f376cffc4da1ab9401cc1a36f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2133909421
 GameObject:
   m_ObjectHideFlags: 0
@@ -985,7 +1046,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2528977053029560648
 PrefabInstance:
@@ -1006,26 +1067,38 @@ PrefabInstance:
     - target: {fileID: 1269632090979690283, guid: 5955966e555560e4db6061e6d6b24415, type: 3}
       propertyPath: _whenSelected.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1683872682}
+      objectReference: {fileID: 825205775}
+    - target: {fileID: 1269632090979690283, guid: 5955966e555560e4db6061e6d6b24415, type: 3}
+      propertyPath: _whenUnselected.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1269632090979690283, guid: 5955966e555560e4db6061e6d6b24415, type: 3}
       propertyPath: _whenUnselected.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1683872682}
+      objectReference: {fileID: 825205775}
     - target: {fileID: 1269632090979690283, guid: 5955966e555560e4db6061e6d6b24415, type: 3}
       propertyPath: _whenSelected.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LogSpellDebugMessage
+      value: CastElectricitySpell
       objectReference: {fileID: 0}
     - target: {fileID: 1269632090979690283, guid: 5955966e555560e4db6061e6d6b24415, type: 3}
       propertyPath: _whenUnselected.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LogSpellDebugMessage
+      value: ClearSpells
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269632090979690283, guid: 5955966e555560e4db6061e6d6b24415, type: 3}
+      propertyPath: _whenSelected.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SpellCaster, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269632090979690283, guid: 5955966e555560e4db6061e6d6b24415, type: 3}
+      propertyPath: _whenUnselected.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SpellCaster, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1269632090979690283, guid: 5955966e555560e4db6061e6d6b24415, type: 3}
       propertyPath: _whenSelected.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: tttttttttttttttttttttttttttttttttttttttttttttttttt
+      value: right
       objectReference: {fileID: 0}
     - target: {fileID: 1269632090979690283, guid: 5955966e555560e4db6061e6d6b24415, type: 3}
       propertyPath: _whenUnselected.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+      value: right
       objectReference: {fileID: 0}
     - target: {fileID: 3961000253948693596, guid: 5955966e555560e4db6061e6d6b24415, type: 3}
       propertyPath: m_RootOrder
@@ -1087,3 +1160,86 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3961000253948693596, guid: 5955966e555560e4db6061e6d6b24415, type: 3}
   m_PrefabInstance: {fileID: 2528977053029560648}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2820632521484746198
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 2
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3295711388856228792, guid: f2f60d2ea5759e746b172e262d2aa6a9, type: 3}
+      propertyPath: m_Name
+      value: SpellCaster
+      objectReference: {fileID: 0}
+    - target: {fileID: 5270710927606396765, guid: f2f60d2ea5759e746b172e262d2aa6a9, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5270710927606396765, guid: f2f60d2ea5759e746b172e262d2aa6a9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.23356116
+      objectReference: {fileID: 0}
+    - target: {fileID: 5270710927606396765, guid: f2f60d2ea5759e746b172e262d2aa6a9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.2121365
+      objectReference: {fileID: 0}
+    - target: {fileID: 5270710927606396765, guid: f2f60d2ea5759e746b172e262d2aa6a9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -4.675954
+      objectReference: {fileID: 0}
+    - target: {fileID: 5270710927606396765, guid: f2f60d2ea5759e746b172e262d2aa6a9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5270710927606396765, guid: f2f60d2ea5759e746b172e262d2aa6a9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5270710927606396765, guid: f2f60d2ea5759e746b172e262d2aa6a9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5270710927606396765, guid: f2f60d2ea5759e746b172e262d2aa6a9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5270710927606396765, guid: f2f60d2ea5759e746b172e262d2aa6a9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5270710927606396765, guid: f2f60d2ea5759e746b172e262d2aa6a9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5270710927606396765, guid: f2f60d2ea5759e746b172e262d2aa6a9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7389714136360484040, guid: f2f60d2ea5759e746b172e262d2aa6a9, type: 3}
+      propertyPath: leftH
+      value: 
+      objectReference: {fileID: 801043439}
+    - target: {fileID: 7389714136360484040, guid: f2f60d2ea5759e746b172e262d2aa6a9, type: 3}
+      propertyPath: rightH
+      value: 
+      objectReference: {fileID: 580792482}
+    - target: {fileID: 7389714136360484040, guid: f2f60d2ea5759e746b172e262d2aa6a9, type: 3}
+      propertyPath: fireball
+      value: 
+      objectReference: {fileID: 121802, guid: 8f18e1d8c46c51f429429815455062fc, type: 3}
+    - target: {fileID: 7389714136360484040, guid: f2f60d2ea5759e746b172e262d2aa6a9, type: 3}
+      propertyPath: leftHand
+      value: 
+      objectReference: {fileID: 1706403456}
+    - target: {fileID: 7389714136360484040, guid: f2f60d2ea5759e746b172e262d2aa6a9, type: 3}
+      propertyPath: rightHand
+      value: 
+      objectReference: {fileID: 1225491080}
+    - target: {fileID: 7389714136360484040, guid: f2f60d2ea5759e746b172e262d2aa6a9, type: 3}
+      propertyPath: electricity
+      value: 
+      objectReference: {fileID: 106988, guid: a9892f6a83fd8d4468ce0c8a3d09d3cd, type: 3}
+    m_RemovedComponents: []
+    m_AddedGameObjects: []
+  m_SourcePrefab: {fileID: 100100000, guid: f2f60d2ea5759e746b172e262d2aa6a9, type: 3}

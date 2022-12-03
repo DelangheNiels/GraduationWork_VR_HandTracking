@@ -155,6 +155,9 @@ MonoBehaviour:
     - _mode: 0
       _feature: 5
       _state: 15
+    - _mode: 0
+      _feature: 2
+      _state: 8
   _transformConfig:
     PositionOffset: {x: 0, y: 0, z: 0}
     RotationOffset: {x: 0, y: 0, z: 0}
