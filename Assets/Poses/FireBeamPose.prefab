@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6033425930537498878}
   - component: {fileID: 890633970214296318}
   m_Layer: 0
-  m_Name: FireBallPose
+  m_Name: FireBeamPose
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -136,7 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hand: {fileID: 6945349916234845716}
   _shapes:
-  - {fileID: 11400000, guid: 3f25df69245e9b54bb6e1c98c2805cd0, type: 2}
+  - {fileID: 11400000, guid: 3a2c7d00d64b2884f8d732a1d4427129, type: 2}
 --- !u!114 &890633970214296318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,14 +153,11 @@ MonoBehaviour:
   _transformFeatureConfigs:
     _values:
     - _mode: 0
-      _feature: 5
-      _state: 15
-    - _mode: 0
-      _feature: 2
-      _state: 8
-    - _mode: 0
       _feature: 0
       _state: 0
+    - _mode: 0
+      _feature: 4
+      _state: 14
   _transformConfig:
     PositionOffset: {x: 0, y: 0, z: 0}
     RotationOffset: {x: 0, y: 0, z: 0}
