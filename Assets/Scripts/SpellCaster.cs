@@ -202,6 +202,8 @@ public class SpellCaster : MonoBehaviour
 
     public void ClearSpells(string hand)
     {
+        Debug.Log("------------- Clearing spells --------------------------");
+
         if (hand == "both" && CastedSpellForBothHands != null)
         {
             Destroy(CastedSpellForBothHands);

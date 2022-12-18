@@ -14,13 +14,15 @@ public struct Gesture
     public List<Quaternion> fingersRotationData;
 
     public UnityEvent onRecognized;
+
+    public UnityEvent onRecognizedEnd;
 }
 
 public class GestureDetection : MonoBehaviour
 {
     [Header("Threshold value")]
     public float distanceThreshold = 0.1f;
-    public float dotThreshold = 0.25f;
+    public float angleThreshold = 0.25f;
 
     [Header("Hand Skeleton")]
     public OVRSkeleton skeleton;
@@ -34,12 +36,8 @@ public class GestureDetection : MonoBehaviour
     public bool debugMode = true;
 
     private bool hasStarted = false;
-    private bool hasRecognize = false;
+    private bool hasRecognized = false;
     private bool done = false;
-
-    //// Add an event if you want to make happen when a gesture is not identified
-    //[Header("Not Recognized Event")]
-    //public UnityEvent notRecognize;
 
     private Gesture previousGesture = new Gesture();
 
@@ -64,7 +62,7 @@ public class GestureDetection : MonoBehaviour
     }
     public void SetSkeleton()
     {
-        // Populate the private list of fingerbones from the current hand we put in the skeleton
+        // Populate list of fingerbones from the current hand 
         fingerbones = new List<OVRBone>(skeleton.Bones);
     }
 
@@ -81,29 +79,28 @@ public class GestureDetection : MonoBehaviour
         {
             Gesture currentGesture = Recognize();
 
-            hasRecognize = !currentGesture.Equals(new Gesture());
+            hasRecognized = !currentGesture.Equals(new Gesture());
 
             // and if the gesture is recognized
-            if (hasRecognize && !currentGesture.Equals(previousGesture))
+            if (hasRecognized && !currentGesture.Equals(previousGesture))
             {
                 // we change another boolean to avoid a loop of event
                 done = true;
 
-                Debug.Log("The name of the found gesture is: " + currentGesture.name);
-                //currentGesture.onRecognized?.Invoke();
+                currentGesture.onRecognized?.Invoke();
                 previousGesture = currentGesture;
+                return;
             }
 
             else
             {
-                if (done)
+                if (done && !currentGesture.Equals(previousGesture))
                 {
-                    Debug.Log("Not Recognized");
-                    // we set to false the boolean again, so this will not loop
+
                     done = false;
 
-                    // and finally we will invoke an event when we end to make the previous gesture
-                    //notRecognize?.Invoke();
+                    previousGesture.onRecognizedEnd?.Invoke();
+                    previousGesture = new Gesture();
                 }
             }
         }
@@ -136,43 +133,43 @@ public class GestureDetection : MonoBehaviour
     {
         Gesture currentGesture = new Gesture();
 
-        float currentMin = Mathf.Infinity;
+        float currentMinDistance = Mathf.Infinity;
+        float currentMinAngle = Mathf.Infinity;
 
         foreach (var gesture in gestures)
         {
             float sumDistance = 0;
+            float sumAngleOffset = 0;
 
             bool isDiscarded = false;
-
+           
             for (int i = 0; i < fingerbones.Count; i++)
             {
                
                 Vector3 currentData = skeleton.transform.InverseTransformPoint(fingerbones[i].Transform.position);
 
-                // with a new float we calculate the distance between the current gesture we are making with all the gesture we saved
                 float distance = Vector3.Distance(currentData, gesture.fingerDatas[i]);
-                //float angle = Quaternion.Angle(skeleton.transform.rotation, gesture.fingersRotationData[i]);
-                float dot = Math.Abs(Quaternion.Dot(skeleton.transform.rotation, gesture.fingersRotationData[i]));
-                //Debug.Log(dot + "zzzzzzzzzzzzzzzz" + (1 - dotThreshold));
-                // if the distance is bigger than threshold discard gesture
-                if (distance > distanceThreshold )
+                float dot = Quaternion.Dot(fingerbones[i].Transform.rotation, gesture.fingersRotationData[i]);
+
+                if (distance > distanceThreshold || (1 - dot) > angleThreshold)
                 {
-                    //Debug.Log("discard");
                     isDiscarded = true;
                     break;
                 }
-                //Debug.Log("No discard uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+
                 sumDistance += distance;
+                sumAngleOffset += (1 - dot);
             }
 
-            if (!isDiscarded && sumDistance < currentMin)
+            if (!isDiscarded && sumDistance < currentMinDistance && sumAngleOffset < currentMinAngle)
             {
-                currentMin = sumDistance;
+                currentMinDistance = sumDistance;
+                currentMinAngle = sumAngleOffset;
 
                 currentGesture = gesture;
             }
         }
-
+        
         return currentGesture;
     }
 }
