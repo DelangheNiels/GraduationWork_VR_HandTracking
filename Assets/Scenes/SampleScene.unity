@@ -184,6 +184,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1225491080}
     - target: {fileID: 9218944446467071217, guid: e41b7d1d1e9475548b18682029b0a4c6, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9218944446467071217, guid: e41b7d1d1e9475548b18682029b0a4c6, type: 3}
+      propertyPath: angleThreshold
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9218944446467071217, guid: e41b7d1d1e9475548b18682029b0a4c6, type: 3}
       propertyPath: distanceThreshold
       value: 0.05
       objectReference: {fileID: 0}
@@ -1011,8 +1019,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 1232729719}
     m_Modifications:
     - target: {fileID: 890633970214296318, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
+      propertyPath: _transformConfig.FeatureThresholds
+      value: 
+      objectReference: {fileID: 11400000, guid: 039cf5a7424e1e046b79287e9375cf09, type: 2}
+    - target: {fileID: 890633970214296318, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
       propertyPath: _transformFeatureConfigs._values.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 890633970214296318, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
       propertyPath: _transformFeatureConfigs._values.Array.data[0]._state
@@ -1027,6 +1039,10 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 890633970214296318, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
+      propertyPath: _transformFeatureConfigs._values.Array.data[3]._state
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 890633970214296318, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
       propertyPath: _transformFeatureConfigs._values.Array.data[0]._feature
       value: 5
       objectReference: {fileID: 0}
@@ -1037,6 +1053,10 @@ PrefabInstance:
     - target: {fileID: 890633970214296318, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
       propertyPath: _transformFeatureConfigs._values.Array.data[2]._feature
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 890633970214296318, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
+      propertyPath: _transformFeatureConfigs._values.Array.data[3]._feature
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1269632090979690283, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
       propertyPath: _whenSelected.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1223,8 +1243,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1232729719}
     m_Modifications:
     - target: {fileID: 890633970214296318, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
+      propertyPath: _transformFeatureConfigs._values.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 890633970214296318, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
       propertyPath: _transformFeatureConfigs._values.Array.data[2]._state
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 890633970214296318, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
+      propertyPath: _transformFeatureConfigs._values.Array.data[3]._state
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 890633970214296318, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
+      propertyPath: _transformFeatureConfigs._values.Array.data[3]._feature
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1269632090979690283, guid: 1f8aaac2dbce73a4daea84fec361ca17, type: 3}
       propertyPath: _whenSelected.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1747,6 +1779,10 @@ PrefabInstance:
       propertyPath: _transformConfig.UpVectorType
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 890633970214296318, guid: 5955966e555560e4db6061e6d6b24415, type: 3}
+      propertyPath: _transformConfig.FeatureThresholds
+      value: 
+      objectReference: {fileID: 11400000, guid: 039cf5a7424e1e046b79287e9375cf09, type: 2}
     - target: {fileID: 890633970214296318, guid: 5955966e555560e4db6061e6d6b24415, type: 3}
       propertyPath: _transformFeatureConfigs._values.Array.size
       value: 1
