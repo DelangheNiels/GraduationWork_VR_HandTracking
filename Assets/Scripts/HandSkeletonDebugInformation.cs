@@ -22,10 +22,10 @@ public class HandSkeletonDebugInformation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space) && hand.IsTracked)
-        {
-            DisplayBoneInfo();
-        }
+        //if(Input.GetKeyDown(KeyCode.Space) && hand.IsTracked)
+        //{
+        //    DisplayBoneInfo();
+        //}
     }
 
     void DisplayBoneInfo()

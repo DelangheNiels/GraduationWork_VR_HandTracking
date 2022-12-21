@@ -122,7 +122,6 @@ public class SpellCaster : MonoBehaviour
     private bool AreBothHandsCastingSameSpell(Spells spell)
     {
         bool result = handsSpellList[0].Value == spell && handsSpellList[1].Value == spell;
-        Debug.Log("------------checking hands result: " + result.ToString());
         return result;
     }
 
