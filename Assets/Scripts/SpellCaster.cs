@@ -5,8 +5,9 @@ using Oculus.Interaction.Input;
 
 public class SpellCaster : MonoBehaviour
 {
-
-    public enum Spells { fireball, electricity, fireBeam, none};
+    [System.Serializable]
+    public enum Hands { left, right , both };
+    public enum Spells { fireball, electricity, fireBeam, electricityBeam,none};
 
     [SerializeField]
     private OVRSkeleton leftHand;
@@ -27,6 +28,8 @@ public class SpellCaster : MonoBehaviour
     [SerializeField] private GameObject electricity;
 
     [SerializeField] private GameObject fireBeam;
+
+    [SerializeField] private GameObject electricityBeam;
 
     private List<KeyValuePair<string, GameObject>> spells;
     private List<KeyValuePair<string, Spells>> handsSpellList;
@@ -187,7 +190,6 @@ public class SpellCaster : MonoBehaviour
 
     public void CastFireBeamSpell(string hand)
     {
-        Debug.Log("--------------both hands: " + hand + " ---------------------");
         SetCastedSpellForHand(hand, Spells.fireBeam);
 
         Vector3 pos = new Vector3();
@@ -199,18 +201,29 @@ public class SpellCaster : MonoBehaviour
 
     }
 
+    public void CastElectricityBeamSpell(string hand)
+    {
+        SetCastedSpellForHand(hand, Spells.electricityBeam);
+
+        Vector3 pos = new Vector3();
+        pos.y += 0.5f;
+        if (areHandsTogether && AreBothHandsCastingSameSpell(Spells.electricityBeam) && CastedSpellForBothHands == null)
+        {
+            CastedSpellForBothHands = Instantiate(electricityBeam, pos, Quaternion.identity);
+
+        }
+    }
+
     public void ClearSpells(string hand)
     {
-        Debug.Log("------------- Clearing spells --------------------------");
 
-        if (hand == "both" && CastedSpellForBothHands != null)
+        if (CastedSpellForBothHands != null)
         {
             Destroy(CastedSpellForBothHands);
             CastedSpellForBothHands = null;
             Debug.Log("-------------------Destroying both hands spell-------------------");
 
-            SetCastedSpellForHand("left", Spells.none);
-            SetCastedSpellForHand("right", Spells.none);
+            SetCastedSpellForHand(hand, Spells.none);
         }
 
         else

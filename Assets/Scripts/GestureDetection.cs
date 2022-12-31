@@ -82,6 +82,10 @@ public class GestureDetection : MonoBehaviour
     //Only use when in debug mode to save gestures to list
     private DynamicGesture dynamicGestureToSave = new DynamicGesture();
 
+    private List<DynamicGesture> possibleDynamicGesturesForLeftHand = new List<DynamicGesture>();
+    private List<DynamicGesture> possibleDynamicGesturesForRightHand = new List<DynamicGesture>();
+    //-------------------------------------------------------------------------------------------------------------------//
+
     void Start()
     {
         //Used coroutine to wait until Oculus hands are available
@@ -200,9 +204,10 @@ public class GestureDetection : MonoBehaviour
         dynamicGestureToSave.gestures = new List<Gesture>();
     }
 
-    Gesture Recognize(OVRSkeleton.SkeletonType handType, List<Gesture> listOfGestures)
+    List<Gesture> Recognize(OVRSkeleton.SkeletonType handType, List<Gesture> listOfGestures, bool doClosestCheck = true)
     {
-        Gesture currentGesture = new Gesture();
+       
+        List<Gesture> foundGestures = new List<Gesture>();
 
         float currentMinDistance = Mathf.Infinity;
         float currentMinAngle = Mathf.Infinity;
@@ -237,58 +242,48 @@ public class GestureDetection : MonoBehaviour
                     sumAngleOffset += (1 - dot);
                 }
 
-                if (!isDiscarded && sumDistance < currentMinDistance && sumAngleOffset < currentMinAngle)
+                if(doClosestCheck)
                 {
-                    currentMinDistance = sumDistance;
-                    currentMinAngle = sumAngleOffset;
+                    if (!isDiscarded && sumDistance < currentMinDistance && sumAngleOffset < currentMinAngle)
+                    {
+                        currentMinDistance = sumDistance;
+                        currentMinAngle = sumAngleOffset;
 
-                    currentGesture = gesture;
+                        if(foundGestures.Count == 0)
+                        {
+                            foundGestures.Add(gesture);
+                        }
+
+                        else
+                        {
+                            foundGestures[0] = gesture;
+                        }
+                    }
                 }
+
+                else
+                    if(!isDiscarded)
+                        foundGestures.Add(gesture);
+
             }
             
         }
         
-        return currentGesture;
+        return foundGestures;
     }
 
-    Gesture RecognizeDynamicGesture(OVRSkeleton.SkeletonType hand)
+    List<Gesture> RecognizeDynamicGesture(OVRSkeleton.SkeletonType hand)
     {
         
         List<Gesture> gestureList = new List<Gesture>();
 
-        if(hand.Equals(OVRSkeleton.SkeletonType.HandLeft))
+        foreach(var dynamicGesture in dynamicGestures)
         {
-            if (performedDynamicGestureLeftHand.Equals(new DynamicGesture()))
-            {
-                foreach (var gesture in dynamicGestures)
-                {
-                    gestureList.Add(gesture.gestures[0]);
-                }
-            }
-
-            else
-            {
-                gestureList = performedDynamicGestureLeftHand.gestures;
-            }
+            for (int i = 0; i < dynamicGesture.gestures.Count; i++)
+                gestureList.Add(dynamicGesture.gestures[i]);
         }
 
-        if (hand.Equals(OVRSkeleton.SkeletonType.HandRight))
-        {
-            if (performedDynamicGestureRightHand.Equals(new DynamicGesture()))
-            {
-                foreach (var gesture in dynamicGestures)
-                {
-                    gestureList.Add(gesture.gestures[0]);
-                }
-            }
-
-            else
-            {
-                gestureList = performedDynamicGestureRightHand.gestures;
-            }
-        }
-
-        return Recognize(hand, gestureList);
+        return Recognize(hand, gestureList, false);
     }
     void HandleDynamicGestures()
     {
@@ -300,11 +295,31 @@ public class GestureDetection : MonoBehaviour
     {
         if (!recognizeDynamicGestures)
         {
-            Gesture currentGesture = Recognize(OVRSkeleton.SkeletonType.HandLeft,gestures);
-            HandleGestureLeftHand(currentGesture);
+            List<Gesture> foundGesturesLeftHand = Recognize(OVRSkeleton.SkeletonType.HandLeft, gestures,true);
+            if(foundGesturesLeftHand.Count > 0)
+            {
+                Gesture currentGesture = foundGesturesLeftHand[0];
+                HandleGestureLeftHand(currentGesture);
+            }
 
-            currentGesture = Recognize(OVRSkeleton.SkeletonType.HandRight,gestures);
-            HandleGestureRightHand(currentGesture);
+            else
+            {
+                HandleGestureLeftHand(new Gesture());
+            }
+
+            List<Gesture> foundGesturesRightHand = Recognize(OVRSkeleton.SkeletonType.HandRight, gestures, true);
+            if (foundGesturesRightHand.Count > 0)
+            {
+                Gesture currentGesture = foundGesturesRightHand[0];
+                HandleGestureRightHand(currentGesture);
+            }
+
+            else
+            {
+                HandleGestureRightHand(new Gesture());
+            }
+
+
 
         }
     }
@@ -373,107 +388,6 @@ public class GestureDetection : MonoBehaviour
         }
     }
 
-    void HandleDynamicGestureLeftHand()
-    {
-        Gesture currentGesture = RecognizeDynamicGesture(OVRSkeleton.SkeletonType.HandLeft);
-        bool hasRecognized = !currentGesture.Equals(new Gesture());
-
-        if (hasRecognized)
-        {
-            if (sequenceIndexLeftHand == 0)
-            {
-                foreach (var gesture in dynamicGestures)
-                {
-                    if (currentGesture.Equals(gesture.gestures[0]) && gesture.hand.GetSkeletonType().Equals(OVRSkeleton.SkeletonType.HandLeft))
-                    {
-                        performedDynamicGestureLeftHand = gesture;
-                        sequenceIndexLeftHand = 1;
-                        return;
-                    }
-                }
-            }
-
-            else
-            {
-                if (currentGesture.Equals(performedDynamicGestureLeftHand.gestures[sequenceIndexLeftHand]))
-                {
-                    timerNextStepLeft = 0.0f;
-
-                    if (!performedDynamicGestureLeftHand.Equals(new DynamicGesture()) && sequenceIndexLeftHand >= performedDynamicGestureLeftHand.gestures.Count - 1 && !isCastingDynamicSpellLeft)
-                    {
-                        isCastingDynamicSpellLeft = true;
-                        performedDynamicGestureLeftHand.onRecognized?.Invoke();
-                    }
-
-                    else
-                    {
-                        if (!isCastingDynamicSpellLeft)
-                            sequenceIndexLeftHand++;
-                    }
-
-                }
-            }
-        }
-
-        else
-        {
-            if (isCastingDynamicSpellLeft)
-            {
-                ResetDynamicGestureRecognitionLeftHand();
-            }
-        }
-    }
-
-    void HandleDynamicGestureRightHand()
-    {
-        Gesture currentGesture = RecognizeDynamicGesture(OVRSkeleton.SkeletonType.HandRight);
-        bool hasRecognized = !currentGesture.Equals(new Gesture());
-
-        if (hasRecognized)
-        {
-            if (sequenceIndexRightHand == 0)
-            {
-                foreach (var gesture in dynamicGestures)
-                {
-                    if (currentGesture.Equals(gesture.gestures[0]) && gesture.hand.GetSkeletonType().Equals(OVRSkeleton.SkeletonType.HandRight))
-                    {
-                        performedDynamicGestureRightHand = gesture;
-                        sequenceIndexRightHand = 1;
-                        return;
-                    }
-                }
-            }
-
-            else
-            {
-                if (currentGesture.Equals(performedDynamicGestureRightHand.gestures[sequenceIndexRightHand]))
-                {
-                    timerNextStepRight = 0.0f;
-
-                    if (!performedDynamicGestureRightHand.Equals(new DynamicGesture()) && sequenceIndexRightHand >= performedDynamicGestureRightHand.gestures.Count - 1 && !isCastingDynamicSpellRight)
-                    {
-                        isCastingDynamicSpellRight = true;
-                        performedDynamicGestureRightHand.onRecognized?.Invoke();
-                    }
-
-                    else
-                    {
-                        if (!isCastingDynamicSpellRight)
-                            sequenceIndexRightHand++;
-                    }
-                }
-            }
-        }
-
-        else
-        {
-            if (isCastingDynamicSpellRight)
-            {
-                ResetDynamicGestureRecognitionRightHand();
-            }
-        }
-    }
-
     void ResetDynamicGestureRecognitionLeftHand()
     {
         performedDynamicGestureLeftHand.onRecognizedEnd?.Invoke();
@@ -481,6 +395,7 @@ public class GestureDetection : MonoBehaviour
         sequenceIndexLeftHand = 0;
         performedDynamicGestureLeftHand = new DynamicGesture();
         isCastingDynamicSpellLeft = false;
+        possibleDynamicGesturesForLeftHand.Clear();
     }
 
     void ResetDynamicGestureRecognitionRightHand()
@@ -490,5 +405,135 @@ public class GestureDetection : MonoBehaviour
         sequenceIndexRightHand = 0;
         performedDynamicGestureRightHand = new DynamicGesture();
         isCastingDynamicSpellRight = false;
+        possibleDynamicGesturesForRightHand.Clear();
     }
+
+    void HandleDynamicGestureLeftHand()
+    {
+        bool increaseIndex = false;
+
+        List<Gesture> foundGestures = RecognizeDynamicGesture(OVRSkeleton.SkeletonType.HandLeft);
+        bool hasRecognized = foundGestures.Count > 0;
+
+        if (hasRecognized)
+        {
+            foreach (var gesture in foundGestures)
+            {
+                for (int i = 0; i < dynamicGestures.Count; i++)
+                {
+                    if (sequenceIndexLeftHand < dynamicGestures[i].gestures.Count)
+                    {
+                        if (gesture.hand.Equals(dynamicGestures[i].hand) && gesture.Equals(dynamicGestures[i].gestures[sequenceIndexLeftHand]))
+                        {
+                            timerNextStepLeft = 0.0f;
+                            gesture.onRecognized?.Invoke();
+
+                            if (!possibleDynamicGesturesForLeftHand.Contains(dynamicGestures[i]))
+                                possibleDynamicGesturesForLeftHand.Add(dynamicGestures[i]);
+
+                            increaseIndex = true;
+                        }
+
+                        else
+                        {
+                            if (possibleDynamicGesturesForLeftHand.Contains(dynamicGestures[i]))
+                                possibleDynamicGesturesForLeftHand.Remove(dynamicGestures[i]);
+                        }
+                    }
+                }
+            }
+
+
+            if (possibleDynamicGesturesForLeftHand.Count > 0)
+            {
+                foreach (var dynamicGesture in possibleDynamicGesturesForLeftHand)
+                {
+                    if (sequenceIndexLeftHand == dynamicGesture.gestures.Count &&  performedDynamicGestureLeftHand.Equals(new DynamicGesture()))
+                    {
+                        dynamicGesture.onRecognized?.Invoke();
+                        performedDynamicGestureLeftHand = dynamicGesture;
+
+                    }
+                }
+            }
+
+            if (performedDynamicGestureLeftHand.Equals(new DynamicGesture()) && increaseIndex)
+                sequenceIndexLeftHand++;
+
+        }
+
+        else
+        {
+            if (!performedDynamicGestureLeftHand.Equals(new DynamicGesture()))
+            {
+                performedDynamicGestureLeftHand.onRecognizedEnd?.Invoke();
+                ResetDynamicGestureRecognitionLeftHand();
+            }
+        }
+    }
+
+    void HandleDynamicGestureRightHand()
+    {
+        bool increaseIndex = false;
+
+        List<Gesture> foundGestures = RecognizeDynamicGesture(OVRSkeleton.SkeletonType.HandRight);
+        bool hasRecognized = foundGestures.Count > 0;
+
+        if (hasRecognized)
+        {
+            foreach (var gesture in foundGestures)
+            {
+                for (int i = 0; i < dynamicGestures.Count; i++)
+                {
+                    if(sequenceIndexRightHand < dynamicGestures[i].gestures.Count)
+                    {
+                        if (gesture.hand.Equals(dynamicGestures[i].hand) && gesture.Equals(dynamicGestures[i].gestures[sequenceIndexRightHand]))
+                        {
+                            timerNextStepLeft = 0.0f;
+                            gesture.onRecognized?.Invoke();
+
+                            if(!possibleDynamicGesturesForRightHand.Contains(dynamicGestures[i]))
+                                possibleDynamicGesturesForRightHand.Add(dynamicGestures[i]);
+
+                            increaseIndex = true;
+                        }
+
+                        else
+                        {
+                            if (possibleDynamicGesturesForRightHand.Contains(dynamicGestures[i]))
+                                possibleDynamicGesturesForRightHand.Remove(dynamicGestures[i]);
+                        }
+                    }
+                }
+            }
+                
+
+            if (possibleDynamicGesturesForRightHand.Count > 0)
+            {
+                foreach (var dynamicGesture in possibleDynamicGesturesForRightHand)
+                {
+                    if (sequenceIndexRightHand == dynamicGesture.gestures.Count && performedDynamicGestureRightHand.Equals(new DynamicGesture()))
+                    {
+                        dynamicGesture.onRecognized?.Invoke();
+                        performedDynamicGestureRightHand = dynamicGesture;
+                        
+                    }
+                }
+            }
+
+            if (performedDynamicGestureRightHand.Equals(new DynamicGesture()) && increaseIndex)
+                sequenceIndexRightHand++;
+
+        }
+
+        else
+        {
+            if (!performedDynamicGestureRightHand.Equals(new DynamicGesture()))
+            {
+                performedDynamicGestureRightHand.onRecognizedEnd?.Invoke();
+                ResetDynamicGestureRecognitionRightHand();
+            }
+        }
+    }
+
 }
