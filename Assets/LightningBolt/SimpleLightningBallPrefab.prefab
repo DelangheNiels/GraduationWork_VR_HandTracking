@@ -35,9 +35,9 @@ Transform:
   m_Children:
   - {fileID: 427242}
   - {fileID: 458970}
-  - {fileID: 668733655627080177}
-  - {fileID: 1530132658255189167}
-  - {fileID: 744799964134445398}
+  - {fileID: 6559833461404365495}
+  - {fileID: 3714707569766676950}
+  - {fileID: 5486675594061430073}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -113,8 +113,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.4740572, g: 0, b: 1, a: 1}
-      key1: {r: 0.7727698, g: 0.39101997, b: 0.9528302, a: 1}
+      key0: {r: 0, g: 0.16754007, b: 1, a: 1}
+      key1: {r: 0.39215687, g: 0.45636588, b: 0.9529412, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -167,12 +167,12 @@ MonoBehaviour:
   StartPosition: {x: 0, y: 0, z: 0}
   EndObject: {fileID: 171180}
   EndPosition: {x: 0, y: 0, z: 0}
-  Generations: 6
+  Generations: 8
   Duration: 0.03
   ChaosFactor: 0.15
   ManualMode: 0
-  Rows: 1
-  Columns: 1
+  Rows: 10
+  Columns: 10
   AnimationMode: 0
 --- !u!114 &226669152898029112
 MonoBehaviour:
@@ -186,9 +186,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 946c0a34555a28e438f5da3cf715cd1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartObject: {fileID: 7071245879786133946}
+  StartObject: {fileID: 163122}
   StartPosition: {x: 0, y: 0, z: 0}
-  EndObject: {fileID: 171180}
+  EndObject: {fileID: 5459050111946726175}
   EndPosition: {x: 0, y: 0, z: 0}
   Generations: 6
   Duration: 0.05
@@ -209,9 +209,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 946c0a34555a28e438f5da3cf715cd1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartObject: {fileID: 7196309722360278125}
+  StartObject: {fileID: 163122}
   StartPosition: {x: 0, y: 0, z: 0}
-  EndObject: {fileID: 171180}
+  EndObject: {fileID: 5524072097845404711}
   EndPosition: {x: 0, y: 0, z: 0}
   Generations: 6
   Duration: 0.05
@@ -232,9 +232,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 946c0a34555a28e438f5da3cf715cd1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartObject: {fileID: 2496152539790280639}
+  StartObject: {fileID: 163122}
   StartPosition: {x: 0, y: 0, z: 0}
-  EndObject: {fileID: 171180}
+  EndObject: {fileID: 8311830814931731846}
   EndPosition: {x: 0, y: 0, z: 0}
   Generations: 6
   Duration: 0.05
@@ -305,7 +305,7 @@ Transform:
   m_Father: {fileID: 490088}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2496152539790280639
+--- !u!1 &5459050111946726175
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -313,30 +313,30 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 744799964134445398}
+  - component: {fileID: 6559833461404365495}
   m_Layer: 0
-  m_Name: LightningStart4
+  m_Name: LightningEnd (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &744799964134445398
+--- !u!4 &6559833461404365495
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2496152539790280639}
+  m_GameObject: {fileID: 5459050111946726175}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.174, y: -0.03, z: 0}
+  m_LocalPosition: {x: 0, y: 0.14, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 490088}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7071245879786133946
+--- !u!1 &5524072097845404711
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -344,30 +344,30 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 668733655627080177}
+  - component: {fileID: 3714707569766676950}
   m_Layer: 0
-  m_Name: LightningStart2
+  m_Name: LightningEnd (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &668733655627080177
+--- !u!4 &3714707569766676950
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7071245879786133946}
+  m_GameObject: {fileID: 5524072097845404711}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.421, z: 0}
+  m_LocalPosition: {x: -0.14, y: 0, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 490088}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7196309722360278125
+--- !u!1 &8311830814931731846
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -375,26 +375,26 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1530132658255189167}
+  - component: {fileID: 5486675594061430073}
   m_Layer: 0
-  m_Name: LightningStart3
+  m_Name: LightningEnd (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1530132658255189167
+--- !u!4 &5486675594061430073
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7196309722360278125}
+  m_GameObject: {fileID: 8311830814931731846}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.174, y: -0.03, z: 0}
+  m_LocalPosition: {x: 0.14, y: 0, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 490088}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

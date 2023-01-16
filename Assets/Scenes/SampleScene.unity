@@ -8707,7 +8707,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 532026830}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.4, y: -2.1988564, z: -13.625264}
+  m_LocalPosition: {x: -1.4, y: -2.1988564, z: -13.09}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10532,7 +10532,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 580792483}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ebb4608b15e46eb489297f97d5f4c65e, type: 3}
   m_Name: 
@@ -11805,7 +11805,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 580792484}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ebb4608b15e46eb489297f97d5f4c65e, type: 3}
   m_Name: 
@@ -13184,7 +13184,7 @@ PrefabInstance:
       objectReference: {fileID: 106988, guid: a9213b2c2a9c921419a3d6175f700546, type: 3}
     - target: {fileID: 7389714136360484040, guid: f2f60d2ea5759e746b172e262d2aa6a9, type: 3}
       propertyPath: maxDistanceToCastBothHandsSpells
-      value: 0.2
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Oculus.Interaction.Input;
+using System;
 
 public class SpellCaster : MonoBehaviour
 {
@@ -17,10 +18,12 @@ public class SpellCaster : MonoBehaviour
     [SerializeField]
     float maxDistanceToCastBothHandsSpells;
 
-    int palmIndex;
-    bool isPalmIndexSet;
-
     bool areHandsTogether;
+
+    bool hasStarted;
+
+    List<OVRBone> rightHandFingerBones = new List<OVRBone>();
+    List<OVRBone> leftHandFingerBones = new List<OVRBone>();
 
     //Spels________________________
     [SerializeField] private GameObject fireball;
@@ -34,12 +37,30 @@ public class SpellCaster : MonoBehaviour
     private List<KeyValuePair<string, GameObject>> spells;
     private List<KeyValuePair<string, Spells>> handsSpellList;
 
-    private GameObject CastedSpellForBothHands;
+    private List<GameObject> CastedSpellsForBothHands;
+
+    public IEnumerator DelayRoutine(float delay, Action actionToDo)
+    {
+        yield return new WaitForSeconds(delay);
+        actionToDo.Invoke();
+    }
+
+    public void Initialize()
+    {
+        SetSkeleton();
+        hasStarted = true;
+    }
+    public void SetSkeleton()
+    {
+        rightHandFingerBones = new List<OVRBone>(rightHand.Bones);
+        leftHandFingerBones = new List<OVRBone>(leftHand.Bones);
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        CastedSpellForBothHands = null;
+        StartCoroutine(DelayRoutine(2.5f, Initialize));
+        CastedSpellsForBothHands = new List<GameObject>();
 
         spells = new List<KeyValuePair<string, GameObject>>();
         handsSpellList = new List<KeyValuePair<string, Spells>>();
@@ -47,17 +68,12 @@ public class SpellCaster : MonoBehaviour
         handsSpellList.Add(new KeyValuePair<string, Spells>("left", Spells.none));
         handsSpellList.Add(new KeyValuePair<string, Spells>("right", Spells.none));
 
-        palmIndex = -1;
-        isPalmIndexSet = false;
         areHandsTogether = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Find index of hand palm
-        FindpalmIndex();
-
         CheckHandsDistance();
 
     }
@@ -66,15 +82,15 @@ public class SpellCaster : MonoBehaviour
     {
         Vector3 position = new Vector3();
 
-        if (palmIndex > -1)
+        if (hasStarted)
         {
             switch (hand)
             {
                 case "left":
-                    position = leftHand.Bones[palmIndex].Transform.position;
+                    position = leftHand.transform.localPosition;
                     break;
                 case "right":
-                    position = rightHand.Bones[palmIndex].Transform.position;
+                    position = rightHand.transform.localPosition;
                     break;
                 default:
                     break;
@@ -84,31 +100,11 @@ public class SpellCaster : MonoBehaviour
         return position;
     }
 
-    private void FindpalmIndex()
-    {
-        if (!isPalmIndexSet)
-        {
-            if (leftHand.Bones.Count != 0)
-            {
-                for (int i = 0; i < leftHand.Bones.Count; i++)
-                {
-                    if (leftHand.Bones[i].Id == OVRSkeleton.BoneId.Body_LeftHandPalm)
-                    {
-                        palmIndex = i;
-                        isPalmIndexSet = true;
-                    }
-                }
-            }
-
-
-        }
-    }
-
     private void CheckHandsDistance()
     {
-        if (isPalmIndexSet)
+        if (hasStarted)
         {
-            var distance = Mathf.Abs(leftHand.Bones[palmIndex].Transform.position.x - rightHand.Bones[palmIndex].Transform.position.x);
+            var distance = Mathf.Abs(leftHand.transform.localPosition.x - rightHand.transform.localPosition.x);
 
             if (distance < maxDistanceToCastBothHandsSpells)
             {
@@ -146,20 +142,6 @@ public class SpellCaster : MonoBehaviour
         Vector3 pos = GetCastPosition(hand);
         pos.z += 1;
 
-        if (hand.Equals("left"))
-        {
-            pos.x -= 0.2f;
-            pos.z += 1.0f;
-            pos.y += 1.2f;
-        }
-
-        if (hand.Equals("right"))
-        {
-            pos.x += 0.3f;
-            pos.y += 1;
-            pos.z += 0.8f;
-        }
-
         Instantiate(fireball, pos, Quaternion.identity);
         SetCastedSpellForHand(hand, Spells.fireball);
     }
@@ -168,23 +150,9 @@ public class SpellCaster : MonoBehaviour
     {
         Vector3 pos = GetCastPosition(hand);
 
-        if (hand.Equals("left"))
-        {
-            pos.x -= 0.2f;
-            pos.z += 1.0f;
-            pos.y += 1.0f;
-        }
-
-        if (hand.Equals("right"))
-        {
-            pos.x += 0.3f;
-            pos.y += 1;
-            pos.z += 1.0f;
-        }
-
-
         var spell = Instantiate(electricity, pos, Quaternion.identity);
         spells.Add(new KeyValuePair<string, GameObject>(hand, spell));
+
         SetCastedSpellForHand(hand, Spells.electricity);
     }
 
@@ -192,10 +160,16 @@ public class SpellCaster : MonoBehaviour
     {
         SetCastedSpellForHand(hand, Spells.fireBeam);
 
-        Vector3 pos = new Vector3();
-        if (areHandsTogether && AreBothHandsCastingSameSpell(Spells.fireBeam) && CastedSpellForBothHands == null)
+        if (areHandsTogether && AreBothHandsCastingSameSpell(Spells.fireBeam) && CastedSpellsForBothHands.Count == 0)
         {
-            CastedSpellForBothHands = Instantiate(fireBeam, pos, Quaternion.identity);
+            Vector3 posLeftHand = GetCastPosition("left");
+            Vector3 posRightHand = GetCastPosition("right");
+
+            Vector3 pos = posLeftHand;
+            pos.x = (posLeftHand.x + posRightHand.x) / 2;
+            pos.z -= 0.5f;
+           
+            CastedSpellsForBothHands.Add(Instantiate(fireBeam, pos, Quaternion.identity));
 
         }
 
@@ -205,11 +179,18 @@ public class SpellCaster : MonoBehaviour
     {
         SetCastedSpellForHand(hand, Spells.electricityBeam);
 
-        Vector3 pos = new Vector3();
-        pos.y += 0.5f;
-        if (areHandsTogether && AreBothHandsCastingSameSpell(Spells.electricityBeam) && CastedSpellForBothHands == null)
+        if (areHandsTogether && AreBothHandsCastingSameSpell(Spells.electricityBeam) && CastedSpellsForBothHands.Count == 0)
         {
-            CastedSpellForBothHands = Instantiate(electricityBeam, pos, Quaternion.identity);
+            Vector3 posLeftHand = GetCastPosition("left");
+            Vector3 posRightHand = GetCastPosition("right");
+
+            Vector3 pos = posLeftHand;
+            pos.x = (posLeftHand.x + posRightHand.x) / 2;
+
+            CastedSpellsForBothHands.Add(Instantiate(electricityBeam, pos, Quaternion.identity));
+            CastedSpellsForBothHands.Add(Instantiate(electricityBeam, pos, Quaternion.identity));
+            CastedSpellsForBothHands.Add(Instantiate(electricityBeam, pos, Quaternion.identity));
+            CastedSpellsForBothHands.Add(Instantiate(electricityBeam, pos, Quaternion.identity));
 
         }
     }
@@ -217,11 +198,13 @@ public class SpellCaster : MonoBehaviour
     public void ClearSpells(string hand)
     {
 
-        if (CastedSpellForBothHands != null)
+        if (CastedSpellsForBothHands.Count != 0)
         {
-            Destroy(CastedSpellForBothHands);
-            CastedSpellForBothHands = null;
-            Debug.Log("-------------------Destroying both hands spell-------------------");
+           foreach(var spell in CastedSpellsForBothHands)
+            {
+                Destroy(spell);
+            }
+            CastedSpellsForBothHands.Clear();
 
             SetCastedSpellForHand(hand, Spells.none);
         }
